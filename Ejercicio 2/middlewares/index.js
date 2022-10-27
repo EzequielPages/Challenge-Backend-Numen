@@ -1,13 +1,13 @@
 const express = require("express");
 const app = express();
 
-app.use("/users/:id", (req, res, next) => {
-  console.log("Request Type:", req.method);
+app.get("/users/:id", function (req, res, next) {
+  let usuarios = req.params.id;
   next();
 });
 
-app.get("/users/:id", (req, res) => {
-  res.send({ users });
+app.get("/users/:id", function (req, res, next) {
+  res.end(req.params.id);
 });
 
 app.post("/", (req, res) => {
@@ -21,3 +21,5 @@ app.put("/users", (req, res) => {
 app.delete("/users", (req, res) => {
   res.send();
 });
+
+app.listen(3001);
