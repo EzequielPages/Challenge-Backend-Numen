@@ -31,7 +31,7 @@ const getUser = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const { id, name, lastname, dni } = req.params;
+  const { id, name, lastname, dni } = req.body;
 
   res.status(201).send({
     message: "El usuario fue creado exitosamente!",
@@ -43,7 +43,7 @@ const createUser = (req, res) => {
 };
 
 const updateUser = (req, res) => {
-  const { id } = req.params;
+  const { id } = req.body;
 
   res.status(201).send({
     message: "El usuario fue actualizado exitosamente!",
@@ -52,8 +52,11 @@ const updateUser = (req, res) => {
 };
 
 const deleteUser = (req, res) => {
+  const { id } = req.body;
+
   res.status(201).send({
     message: "El usuario fue eliminado exitosamente!",
+    id,
   });
 };
 
