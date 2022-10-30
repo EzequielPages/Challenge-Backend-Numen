@@ -27,37 +27,55 @@ let users = [
 
 const getUser = (req, res) => {
   res.status(200).send(users);
-  return users;
 };
 
 const createUser = (req, res) => {
-  const { id, name, lastname, dni } = req.body;
+  const newUser = { ...req.body, id: users.length + 1 };
+  users.push(newUser);
 
-  res.status(201).send({
-    message: "El usuario fue creado exitosamente!",
-    id,
-    name,
-    lastname,
-    dni,
-  });
+  res.status(201).send(users);
 };
 
 const updateUser = (req, res) => {
-  const { id } = req.body;
+  const newData = req.body;
+  const userUpdate = users.find(
+    (users) => users.id === parseInt(req.params.id)
+  );
 
-  res.status(201).send({
-    message: "El usuario fue actualizado exitosamente!",
-    id,
-  });
+  if (!userUpdate) {
+    return res
+      .status(404)
+      .json({ message: "Usuario no actualizado inexistente" });
+  }
+
+  users = users.map((u) =>
+    u.id === parseInt(req.params.id) ? { ...u, ...newData } : u
+  );
+
+  res.status(201).send("Usuario actualizado correctamente");
 };
 
 const deleteUser = (req, res) => {
-  const { id } = req.body;
+  const userDel = users.find((users) => users.id === parseInt(req.params.id));
 
-  res.status(201).send({
-    message: "El usuario fue eliminado exitosamente!",
-    id,
-  });
+  if (!userDel) {
+    return res
+      .status(404)
+      .json({ message: "Usuario no eliminado inexistente" });
+  }
+  users = users.filter((u) => u.id !== parseInt(req.params.id));
+
+  res.status(201).send("Usuario eliminado");
+};
+
+const getOneUser = (req, res) => {
+  const userFound = users.find((users) => users.id === parseInt(req.params.id));
+
+  if (!userFound) {
+    return res.status(404).json({ message: "Usuario no encontrado" });
+  }
+
+  res.status(200).json(userFound);
 };
 
 module.exports = {
@@ -65,4 +83,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  getOneUser,
 };
